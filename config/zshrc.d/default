@@ -13,8 +13,6 @@ source @zsh_autosuggestions@/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 eval "$(@zoxide@/bin/zoxide init zsh)"
 eval "$(@direnv@/bin/direnv hook zsh)"
 
-source ./yubikey
-
 unsetopt SHARE_HISTORY
 setopt EXTENDED_HISTORY
 setopt HIST_IGNORE_ALL_DUPS

@@ -1,3 +1,5 @@
+Thanks to the good work from https://github.com/zmre/pwzsh
+
 # Pre-configured zsh shell via flake
 
 This is a flake that produces a minimal zsh shell that should work reasonably well in crappy environments like a fresh linux console or Mac Terminal. It doesn't require fancy fonts and assumes a limited number of available colors.

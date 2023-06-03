@@ -68,7 +68,7 @@
             export zsh_completions="${pkgs.zsh-completions}"
             export starshipconfig="${./config/starship.toml}"
             substituteAll $src/config/zshrc $out/config/.zshrc
-            substituteAll $src/config/zshrc.d $out/config/.zshrc.d/
+            substituteAll $src/config/.zshrc.d $out/config/.zshrc.d/
             makeWrapper "${zsh}/bin/zsh" "$out/bin/myshell" --set SHELL_SESSIONS_DISABLE 1 --set ZDOTDIR "$out/config" --set myshell 1 --prefix PATH : "$out/bin:"${
               pkgs.lib.makeBinPath dependencies
             }

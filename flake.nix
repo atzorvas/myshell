@@ -58,8 +58,6 @@
           installPhase = ''
             mkdir -p "$out/bin"
             mkdir -p "$out/config"
-            cp -r $src/config/.zshrc.d $out/config/
-            echo "Folders created"
             export zsh_autosuggestions="${pkgs.zsh-autosuggestions}"
             export zsh_autocomplete="${pkgs.zsh-autocomplete}"
             export zsh_syntax_highlighting="${pkgs.zsh-syntax-highlighting}"

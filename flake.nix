@@ -57,7 +57,8 @@
 
           installPhase = ''
             mkdir -p "$out/bin"
-            mkdir -p "$out/config/.zshrc.d"
+            mkdir -p "$out"
+            cp -r $src/config $out
             echo "Folders created"
             export zsh_autosuggestions="${pkgs.zsh-autosuggestions}"
             export zsh_autocomplete="${pkgs.zsh-autocomplete}"
@@ -68,7 +69,7 @@
             export direnv="${pkgs.direnv}"
             export zsh_completions="${pkgs.zsh-completions}"
             export starshipconfig="${./config/starship.toml}"
-            cp -r $src/config $out/config
+ 
             substituteAll $src/config/zshrc $out/config/.zshrc
             makeWrapper "${zsh}/bin/zsh" "$out/bin/myshell" --set SHELL_SESSIONS_DISABLE 1 --set ZDOTDIR "$out/config" --set myshell 1 --prefix PATH : "$out/bin:"${
               pkgs.lib.makeBinPath dependencies

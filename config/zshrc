@@ -111,8 +111,8 @@ alias refresh='source ~/.zshrc'
 source @zsh_syntax_highlighting@/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 if ls -1 /Library/Fonts/ /usr/share/fonts/ ~/.local/share/fonts/ /usr/share/fonts/truetype/ ~/Library/Fonts/ |& grep -q "Nerd Font"; then
-  # we can't know if they are available, but if true type fonts are installed, let's just go for it
   eval $(starship init zsh)
 else
-  echo "Skipped starship since fonts are not available"
+  echo "Consider installing fonts!"
+  eval $(starship init zsh)
 fi

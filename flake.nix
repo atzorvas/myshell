@@ -67,8 +67,16 @@
             export direnv="${pkgs.direnv}"
             export zsh_completions="${pkgs.zsh-completions}"
             export starshipconfig="${./config/starship.toml}"
+            substituteAll $src/config/.zshrc.d/colors $out/config/.zshrc.d/colors
+            substituteAll $src/config/.zshrc.d/completion $out/config/.zshrc.d/completion
+            substituteAll $src/config/.zshrc.d/default $out/config/.zshrc.d/default
+            substituteAll $src/config/.zshrc.d/fzf $out/config/.zshrc.d/fzf
+            substituteAll $src/config/.zshrc.d/lang-java $out/config/.zshrc.d/lang-java
+            substituteAll $src/config/.zshrc.d/lang-python $out/config/.zshrc.d/lang-python
+            substituteAll $src/config/.zshrc.d/lang-ruby $out/config/.zshrc.d/lang-ruby
+            substituteAll $src/config/.zshrc.d/list-mode $out/config/.zshrc.d/list-mode
+            substituteAll $src/config/.zshrc.d/vim-mode $out/config/.zshrc.d/vim-mode
             substituteAll $src/config/zshrc $out/config/.zshrc
-            substituteAll $src/config/.zshrc.d $out/config/.zshrc.d/
             makeWrapper "${zsh}/bin/zsh" "$out/bin/myshell" --set SHELL_SESSIONS_DISABLE 1 --set ZDOTDIR "$out/config" --set myshell 1 --prefix PATH : "$out/bin:"${
               pkgs.lib.makeBinPath dependencies
             }

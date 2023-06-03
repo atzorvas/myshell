@@ -57,8 +57,8 @@
 
           installPhase = ''
             mkdir -p "$out/bin"
-            mkdir -p "$out/config"
             mkdir -p "$out/config/.zshrc.d"
+            echo "Folders created"
             export zsh_autosuggestions="${pkgs.zsh-autosuggestions}"
             export zsh_autocomplete="${pkgs.zsh-autocomplete}"
             export zsh_syntax_highlighting="${pkgs.zsh-syntax-highlighting}"
@@ -68,6 +68,8 @@
             export direnv="${pkgs.direnv}"
             export zsh_completions="${pkgs.zsh-completions}"
             export starshipconfig="${./config/starship.toml}"
+            substituteAll $src/config/zshrc $out/config/.zshrc
+            echo "zshrc copied"
             substituteAll $src/config/.zshrc.d/colors $out/config/.zshrc.d/colors
             substituteAll $src/config/.zshrc.d/completion $out/config/.zshrc.d/completion
             substituteAll $src/config/.zshrc.d/default $out/config/.zshrc.d/default
@@ -77,7 +79,7 @@
             substituteAll $src/config/.zshrc.d/lang-ruby $out/config/.zshrc.d/lang-ruby
             substituteAll $src/config/.zshrc.d/list-mode $out/config/.zshrc.d/list-mode
             substituteAll $src/config/.zshrc.d/vim-mode $out/config/.zshrc.d/vim-mode
-            substituteAll $src/config/zshrc $out/config/.zshrc
+            echo "rest zshrc copied"
             makeWrapper "${zsh}/bin/zsh" "$out/bin/myshell" --set SHELL_SESSIONS_DISABLE 1 --set ZDOTDIR "$out/config" --set myshell 1 --prefix PATH : "$out/bin:"${
               pkgs.lib.makeBinPath dependencies
             }

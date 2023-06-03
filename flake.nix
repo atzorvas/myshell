@@ -58,6 +58,7 @@
           installPhase = ''
             mkdir -p "$out/bin"
             mkdir -p "$out/config"
+            mkdir -p "$out/config/.zshrc.d"
             export zsh_autosuggestions="${pkgs.zsh-autosuggestions}"
             export zsh_autocomplete="${pkgs.zsh-autocomplete}"
             export zsh_syntax_highlighting="${pkgs.zsh-syntax-highlighting}"

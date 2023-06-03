@@ -1,6 +1,8 @@
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 cd $parent_path
-
+echo "in $parent_path"
+echo "trying to load .zshrc.d/default"
+echo "from $pwd / .zshrc.d/default"
 source .zshrc.d/default
 
 cd -

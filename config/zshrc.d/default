@@ -1,0 +1,64 @@
+typeset -U path cdpath fpath manpath
+
+for profile in ${(z)NIX_PROFILES}; do
+  fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
+done
+fpath+=(@zsh_completions@/share/zsh/site-functions)
+
+autoload -U compinit && compinit
+
+source @zsh_autosuggestions@/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+. @fzf@/share/fzf/completion.zsh
+. @fzf@/share/fzf/key-bindings.zsh
+eval "$(@zoxide@/bin/zoxide init zsh)"
+eval "$(@direnv@/bin/direnv hook zsh)"
+
+source ./yubikey
+
+unsetopt SHARE_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt INC_APPEND_HISTORY_TIME
+setopt HIST_FCNTL_LOCK
+setopt HIST_IGNORE_SPACE
+export HISTTIMEFORMAT="[%F %T] "
+export HISTFILESIZE=10000
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
+
+export EDITOR=nvim
+export VISUAL=nvim
+export GIT_EDITOR=nvim
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export TZ="America/Denver"
+
+export FIGNORE="*.o:~:Application Scripts:CVS:.git"
+
+source ./fzf
+
+. ~/.profile
+
+source ./lang-java
+source ./lang-ruby
+source ./lang-python
+
+source ./platform-mac
+
+source ./colors
+source ./vim-mode
+source ./list-mode
+source ./completion
+
+alias code=code-insiders
+alias refresh='source ~/.zshrc'
+
+source @zsh_syntax_highlighting@/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+if ls -1 /Library/Fonts/ /usr/share/fonts/ ~/.local/share/fonts/ /usr/share/fonts/truetype/ ~/Library/Fonts/ |& grep -q "Nerd Font"; then
+  # we can't know if they are available, but if true type fonts are installed, let's just go for it
+  eval $(starship init zsh)
+else
+  echo "Skipped starship since fonts are not available"
+fi

@@ -1,0 +1,10 @@
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+else
+  autoload -Uz compinit && compinit
+fi
+
+alias updatemac='echo "Running with caffeinate -i"; caffeinate -i softwareupdate -ia && brew update && brew upgrade && brew cleanup'

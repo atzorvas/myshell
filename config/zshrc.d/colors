@@ -1,0 +1,7 @@
+export SYSTEMD_COLORS="true"
+export CLICOLOR=1
+export CLICOLOR_FORCE="yes"
+
+export LESS="--raw-control-chars -FXRadeqs -P--Less--?e?x(Next file: %x):(END).:?pB%pB%."
+export PAGER="less"
+export MANPAGER="less -R --use-color -Dd+r -Du+b +Gg -M -s"

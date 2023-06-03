@@ -1,8 +1,7 @@
 {
-  description = "PW's Zsh (pwzsh) Configuration";
+  description = "atzorvas' ZSH (myshell) Configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    #nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-22.05";
     flake-utils.url = "github:numtide/flake-utils";
     pwnvim.url = "github:zmre/pwnvim";
   };
@@ -46,10 +45,10 @@
         ]
         ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ueberzug];
 
-      packages.pwzsh = with pkgs;
+      packages.myshell = with pkgs;
         stdenv.mkDerivation rec {
           version = "1.0.0";
-          name = "pwzsh";
+          name = "myshell";
           inherit system;
           src = self;
           buildInputs = [zsh] ++ dependencies;
@@ -69,17 +68,17 @@
             export zsh_completions="${pkgs.zsh-completions}"
             export starshipconfig="${./config/starship.toml}"
             substituteAll $src/config/zshrc $out/config/.zshrc
-            makeWrapper "${zsh}/bin/zsh" "$out/bin/pwzsh" --set SHELL_SESSIONS_DISABLE 1 --set ZDOTDIR "$out/config" --set PWZSH 1 --prefix PATH : "$out/bin:"${
+            makeWrapper "${zsh}/bin/zsh" "$out/bin/myshell" --set SHELL_SESSIONS_DISABLE 1 --set ZDOTDIR "$out/config" --set myshell 1 --prefix PATH : "$out/bin:"${
               pkgs.lib.makeBinPath dependencies
             }
           '';
         };
-      apps.pwzsh = flake-utils.lib.mkApp {
-        drv = packages.pwzsh;
-        name = "pwzsh";
-        exePath = "/bin/pwzsh";
+      apps.myshell = flake-utils.lib.mkApp {
+        drv = packages.myshell;
+        name = "myshell";
+        exePath = "/bin/myshell";
       };
-      packages.default = packages.pwzsh;
-      apps.default = apps.pwzsh;
+      packages.default = packages.myshell;
+      apps.default = apps.myshell;
     });
 }

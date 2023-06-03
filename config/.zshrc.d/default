@@ -34,6 +34,9 @@ export TZ="America/Denver"
 
 export FIGNORE="*.o:~:Application Scripts:CVS:.git"
 
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")" ; pwd -P )
+cd $parent_path
+
 source ./fzf
 
 . ~/.profile
@@ -60,3 +63,5 @@ if ls -1 /Library/Fonts/ /usr/share/fonts/ ~/.local/share/fonts/ /usr/share/font
 else
   echo "Skipped starship since fonts are not available"
 fi
+
+cd -

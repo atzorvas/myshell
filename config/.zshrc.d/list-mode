@@ -1,7 +1,0 @@
-alias f='\fd -H'
-alias fd='\fd -H -t d'
-alias l='exa --icons --git-ignore --git -F --extended'
-alias ll='exa --icons --git-ignore --git -F --extended -l'
-alias llt='exa --icons --git-ignore --git -F --extended -l -T'
-alias lt='exa --icons --git-ignore --git -F --extended -T'
-alias ls='ls --color=auto -F'

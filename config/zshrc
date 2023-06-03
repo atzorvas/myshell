@@ -1,6 +1,118 @@
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")" ; pwd -P )
-cd $parent_path
+typeset -U path cdpath fpath manpath
 
-source .zshrc.d/default
+for profile in ${(z)NIX_PROFILES}; do
+  fpath+=($profile/share/zsh/site-functions $profile/share/zsh/$ZSH_VERSION/functions $profile/share/zsh/vendor-completions)
+done
+fpath+=(@zsh_completions@/share/zsh/site-functions)
 
-cd -
+autoload -U compinit && compinit
+
+source @zsh_autosuggestions@/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+. @fzf@/share/fzf/completion.zsh
+. @fzf@/share/fzf/key-bindings.zsh
+eval "$(@zoxide@/bin/zoxide init zsh)"
+eval "$(@direnv@/bin/direnv hook zsh)"
+
+unsetopt SHARE_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt INC_APPEND_HISTORY_TIME
+setopt HIST_FCNTL_LOCK
+setopt HIST_IGNORE_SPACE
+export HISTTIMEFORMAT="[%F %T] "
+export HISTFILESIZE=10000
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
+
+export EDITOR=nvim
+export VISUAL=nvim
+export GIT_EDITOR=nvim
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export TZ="America/Denver"
+
+export FIGNORE="*.o:~:Application Scripts:CVS:.git"
+
+### -- COLORS
+export SYSTEMD_COLORS="true"
+export CLICOLOR=1
+export CLICOLOR_FORCE="yes"
+
+export LESS="--raw-control-chars -FXRadeqs -P--Less--?e?x(Next file: %x):(END).:?pB%pB%."
+export PAGER="less"
+export MANPAGER="less -R --use-color -Dd+r -Du+b +Gg -M -s"
+### -- COLORS END
+
+### -- FZF
+if [ -n "${commands[fzf-share]}" ]; then
+  source "$(fzf-share)/key-bindings.zsh"
+  source "$(fzf-share)/completion.zsh"
+fi
+
+export FZF_CTRL_R_OPTS="--sort --exact"
+### -- FZF END
+
+### -- VIM MODE
+set -o vi
+bindkey -v
+
+bindkey '^a' beginning-of-line
+bindkey '^e' end-of-line
+bindkey '^k' kill-line
+bindkey '^w' backward-kill-word
+
+bindkey '^r' history-incremental-search-backward
+bindkey '^s' history-incremental-search-forward
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^[[A' up-line-or-search
+bindkey '^[[B' down-line-or-search
+bindkey -M vicmd 'k' up-line-or-search
+bindkey -M vicmd 'j' down-line-or-search
+bindkey -M vicmd '/' history-incremental-pattern-search-backward # default is vi-history-search-backward
+bindkey -M vicmd '?' vi-history-search-backward # default is vi-history-search-forward
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'v' edit-command-line
+### -- VIM MODE END
+
+### -- LIST OPTS
+alias f='\fd -H'
+alias fd='\fd -H -t d'
+alias l='exa --icons --git-ignore --git -F --extended'
+alias ll='exa --icons --git-ignore --git -F --extended -l'
+alias llt='exa --icons --git-ignore --git -F --extended -l -T'
+alias lt='exa --icons --git-ignore --git -F --extended -T'
+alias ls='ls --color=auto -F'
+### -- LIST OPTS END
+
+### -- COMPLETION
+zstyle ':completion:*' completer _extensions _complete _approximate
+zstyle ':completion:*' menu select
+zstyle ':completion:*:manuals'    separate-sections true
+zstyle ':completion:*:manuals.*'  insert-sections   true
+zstyle ':completion:*:man:*'      menu yes select
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)CVS'
+zstyle ':completion:*:cd:*' ignored-patterns '(*/)#CVS'
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*'   force-list always
+
+zmodload -a autocomplete
+zmodload -a complist
+### -- COMPLETION END
+
+alias code=code-insiders
+alias refresh='source ~/.zshrc'
+
+source @zsh_syntax_highlighting@/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+if ls -1 /Library/Fonts/ /usr/share/fonts/ ~/.local/share/fonts/ /usr/share/fonts/truetype/ ~/Library/Fonts/ |& grep -q "Nerd Font"; then
+  # we can't know if they are available, but if true type fonts are installed, let's just go for it
+  eval $(starship init zsh)
+else
+  echo "Skipped starship since fonts are not available"
+fi
